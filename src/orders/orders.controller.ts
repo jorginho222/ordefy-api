@@ -20,10 +20,12 @@ export class OrdersController {
 
   @Get(':id')
   find(@Param('id') id: string) {
-    if (id === 'last') {
-      return this.ordersService.findLast();
-    }
     return this.ordersService.findOne(+id);
+  }
+
+  @Get('last/:table')
+  findLast(@Param('table') table: string) {
+    return this.ordersService.findLast(+table as number);
   }
 
   @Patch(':id')

@@ -12,6 +12,9 @@ export class Order {
   @Column({ default: new Date() })
   issueDate: Date;
 
+  @Column({default: 1})
+  table: number;
+
   @Column({ default: 'pending' })
   status: string;
 

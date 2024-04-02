@@ -34,8 +34,9 @@ export class OrdersService {
     });
   }
 
-  findLast() {
+  findLast(table: number) {
     return this.orderRepository.find({
+      where: { table: +table },
       order: {
         number: 'DESC'
       },
