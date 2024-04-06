@@ -12,11 +12,14 @@ export class Order {
   @Column({ default: new Date() })
   issueDate: Date;
 
-  @Column({default: 1})
+  @Column()
   table: number;
 
   @Column({ default: 'pending' })
   status: string;
+
+  @Column()
+  netAmount: number;
 
   @Column()
   total: number;
@@ -25,10 +28,11 @@ export class Order {
   details: OrderDetail[];
 
   @BeforeInsert()
-  calculateTotal(): void {
-    this.total = 0
+  calculateTotals(): void {
+    this.netAmount = 0
     this.details.forEach(detail => {
-      this.total += detail.quantity * detail.price;
+      this.netAmount += detail.quantity * detail.price;
+      this.total = this.netAmount * 1.21;
     });
   }
 
