@@ -49,9 +49,9 @@ export class OrdersService {
     return `This action returns a #${id} order`;
   }
 
-
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
+  async update(updateOrderDto: UpdateOrderDto): Promise<Order> {
+    await this.orderRepository.update(updateOrderDto.id, updateOrderDto)
+    return this.orderRepository.findOne({ where: { id: updateOrderDto.id } })
   }
 
   remove(id: number) {

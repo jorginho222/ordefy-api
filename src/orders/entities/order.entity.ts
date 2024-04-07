@@ -18,21 +18,21 @@ export class Order {
   @Column({ default: 'pending' })
   status: string;
 
-  @Column()
-  netAmount: number;
+  @Column({type: 'real', default: '0'})
+  netAmount: string;
 
-  @Column()
-  total: number;
+  @Column({type: 'real', default: '0'})
+  total: string;
 
   @OneToMany(type => OrderDetail, detail => detail.order)
   details: OrderDetail[];
 
   @BeforeInsert()
   calculateTotals(): void {
-    this.netAmount = 0
+    this.netAmount = '0'
     this.details.forEach(detail => {
       this.netAmount += detail.quantity * detail.price;
-      this.total = this.netAmount * 1.21;
+      this.total = (Number(this.netAmount) * 1.21).toString();
     });
   }
 
