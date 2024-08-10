@@ -9,28 +9,29 @@ import { OrderDetail } from './entities/orderDetail.entity';
 @Injectable()
 export class OrdersService {
   constructor(
-    @InjectRepository(Order) private readonly orderRepository: Repository<Order>,
-    @InjectRepository(OrderDetail) private readonly orderDetailRepository: Repository<OrderDetail>
-  ) {
-  }
+    @InjectRepository(Order)
+    private readonly orderRepository: Repository<Order>,
+    @InjectRepository(OrderDetail)
+    private readonly orderDetailRepository: Repository<OrderDetail>,
+  ) {}
 
   async create(createOrderDto: CreateOrderDto) {
-    const newOrder = this.orderRepository.create(createOrderDto)
+    const newOrder = this.orderRepository.create(createOrderDto);
 
-    const orderDetails: OrderDetail[] = []
+    const orderDetails: OrderDetail[] = [];
     for (const detail of createOrderDto.details) {
-      const newDetail = this.orderDetailRepository.create(detail)
-      const orderDetail = await this.orderDetailRepository.save(newDetail)
-      orderDetails.push(orderDetail)
+      const newDetail = this.orderDetailRepository.create(detail);
+      const orderDetail = await this.orderDetailRepository.save(newDetail);
+      orderDetails.push(orderDetail);
     }
 
-    newOrder.details = orderDetails
-    return this.orderRepository.save(newOrder)
+    newOrder.details = orderDetails;
+    return this.orderRepository.save(newOrder);
   }
 
   findAll() {
     return this.orderRepository.find({
-      relations: ['details']
+      relations: ['details'],
     });
   }
 
@@ -38,10 +39,10 @@ export class OrdersService {
     return this.orderRepository.find({
       where: { table: +table },
       order: {
-        number: 'DESC'
+        number: 'DESC',
       },
       take: 1,
-      relations: ['details']
+      relations: ['details'],
     });
   }
 
@@ -50,8 +51,8 @@ export class OrdersService {
   }
 
   async update(updateOrderDto: UpdateOrderDto): Promise<Order> {
-    await this.orderRepository.update(updateOrderDto.id, updateOrderDto)
-    return this.orderRepository.findOne({ where: { id: updateOrderDto.id } })
+    await this.orderRepository.update(updateOrderDto.id, updateOrderDto);
+    return this.orderRepository.findOne({ where: { id: updateOrderDto.id } });
   }
 
   remove(id: number) {
